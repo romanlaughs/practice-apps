@@ -5,7 +5,7 @@ const glossarySchema = new mongoose.Schema ({
   word: String,
   definition: String,
   category: String,
-  syllableCount: Number,
+  isWord: Boolean,
 });
 
 const DB_ = mongoose.model('DB_', glossarySchema);
@@ -20,44 +20,49 @@ let insert = (array) => {
       word: obj.word,
       definition: obj.definition,
       category: obj.category,
-      syllableCount: obj.syllableCount
+      isWord: obj.isWord,
     })
     Saved.save()
   })
   console.log('SAVED!')
 }
 
-let check = (input) => {
-  DB_.find()
-  .then((results) => {
-    console.log(results);
-    if (results.length > 0) {
-      DB_.deleteMany({})
-      console.log('DELETED!!!')
-    } else {
-      console.log('EMPTY')
-    }
-    return input
-  })
-  .then((data) => {
-    insert(data)
-  });
-}
-
-let pull = () => {
-  DB_.find()
+let add = (params) => {
+  return DB_.find(params)
   .then((results) => {
     return results;
+  }).catch((err) => {
+    console.log(err)
   })
 }
 
+let check = (input, params) => {
+  return DB_.find(params)
+    .then((data) => {
+     if(data.length > 0) {
+       console.log(params)
+       throw params
+     } else {
+       return data
+     }
+  })
+  .catch((params) => {
+    console.log('DELETED')
+    return DB_.deleteMany(params)
+  })
+    .then(() => {
+      insert(input)
+      console.log('Data Added')
+      return input
+    })
+    .then((data) => {
+      return data
+    })
+ }
 
-// 1. Use mongoose to establish a connection to MongoDB
-// 2. Set up any schema and models needed by the app
-// 3. Export the models
-// 4. Import the models into any modules that need them
+
 module.exports = {
-  insert: insert,
-  pull: pull,
-  check: check,
+  insert,
+  add,
+  check,
 }

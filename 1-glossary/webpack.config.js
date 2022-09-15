@@ -1,30 +1,32 @@
 require("dotenv").config();
-
+const webpack = require('webpack');
 const path = require("path");
-
-/*
-  What should go here?  Great question!
-
-  Before you go to documentation, verify which version of webpack
-  you are using.
-
-  Use this config to copy production versions of your
-  index.html and styles.css to dist folder upon build
-*/
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  mode: 'production',
-  entry: '/client/src',
+  mode: 'development',
+  entry: '/client/src/index.jsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'client', 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
+  },
+  devtool: false,
+  resolve: {
+    extensions: ['.js', '.jsx', '.json']
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        }
       }
     ]
-  }
+  },
+  devServer: {
+    historyApiFallback: true,
+  },
 };
