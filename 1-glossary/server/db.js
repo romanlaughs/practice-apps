@@ -15,6 +15,7 @@ mongoose.connect('mongodb://localhost/glossary', () => {
 });
 
 let insert = (array) => {
+  console.log(array)
   array.map((obj) => {
     const Saved = new DB_({
       word: obj.word,
@@ -27,7 +28,7 @@ let insert = (array) => {
   console.log('SAVED!')
 }
 
-let add = (params) => {
+let find = (params) => {
   return DB_.find(params)
   .then((results) => {
     return results;
@@ -50,19 +51,28 @@ let check = (input, params) => {
     console.log('DELETED')
     return DB_.deleteMany(params)
   })
-    .then(() => {
+    .then((result) => {
       insert(input)
       console.log('Data Added')
-      return input
+      return result
     })
     .then((data) => {
       return data
     })
  }
 
+ let remove = (param) => {
+  return DB_.deleteMany(param)
+  .then((results) => {
+    console.log(results)
+    console.log('One Deleted')
+  })
+ }
+
 
 module.exports = {
   insert,
-  add,
+  find,
   check,
+  remove,
 }

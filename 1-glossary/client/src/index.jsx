@@ -23,6 +23,7 @@ class App extends React.Component {
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.editWord = this.editWord.bind(this);
   }
 
   componentDidMount() {
@@ -39,9 +40,6 @@ class App extends React.Component {
     if(e.target.name === 'def') {
       this.setState({currentDef: e.target.value})
     }
-    console.log(this.state.currentWord)
-    console.log(this.state.currentCat)
-    console.log(this.state.currentDef)
   }
 
   getWords() {
@@ -57,14 +55,32 @@ class App extends React.Component {
     })
   }
 
+  addWord() {
+    return $.ajax({
+      url: '/add',
+      type: 'POST',
+      data: `${this.state.currentWord},${this.state.currentCat},${this.state.currentDef}`,
+      success: function(res) {
+        alert(res);
+      }
+    })
+    .then((results) => {
+      this.getWords();
+    })
+  }
+
+  editWord(e) {
+    console.log(e.target.value);
+  }
+
   render() {
     return (
       <>
       <div>
-        <Word_list glossWords={this.state.words}/>
+        <Word_list glossWords={this.state.words} onClick={(e) => this.editWord(e)}/>
       </div>
       <div>
-        <Word_Form onChange={(e) => this.handleInputChange(e)}/>
+        <Word_Form onChange={(e) => this.handleInputChange(e)} onClick={(e) => this.addWord()}/>
       </div>
       </>
     )

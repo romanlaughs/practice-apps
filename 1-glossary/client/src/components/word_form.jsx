@@ -17,7 +17,7 @@ function Word_Form(props) {
         <input type='text' id='def' name='def' required minLength='10' maxLength='200' onChange={props.onChange}/>
       </div>
       <div style={{padding: '5px'}}>
-        <button type='submit'>Add Word</button>
+        <button type='submit' onClick={props.onClick}>Add Word</button>
       </div>
     </div>
   )
