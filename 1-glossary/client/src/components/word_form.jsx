@@ -6,7 +6,7 @@ function Word_Form(props) {
     <div>
       <div style={{padding: '5px'}}>
         <label htmlFor='word'>Input Your Word Here:</label>
-        <input type='text' id='word' name='word' required minLength='4' maxLength='20' onChange={props.onChange}/>
+        <input type='text' id='word' name='word' required minLength='4' maxLength='20' onChange={props.onChange} placeholder={props.edit}/>
       </div>
       <div style={{padding: '5px'}}>
         <label htmlFor='cat'>Input Your Category Here: </label>

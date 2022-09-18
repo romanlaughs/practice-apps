@@ -21,12 +21,27 @@ app.get('/test', (req, res) => {
   })
 })
 
+app.post('/delete', (req, res) => {
+  req.on('data', (data) => {
+    var result = data.toString('utf8');
+    return db.remove({word: result})
+    .then((results) => {
+      res.send(`${result} was Deleted!`)
+    })
+  })
+})
+
+app.post('/edit', (req, res) => {
+  req.on('data', (data) => {
+    var result = data.toString('utf8');
+    res.send(result);
+  })
+})
+
 app.post('/add', (req, res) => {
   req.on('data', (data) => {
     var result = data.toString('utf8');
     var next = result.split(',')
-
-    if (next[0])
 
     for (var i = 0; i < next.length; i++) {
       if (next[i].toString() === '[object Object]') {

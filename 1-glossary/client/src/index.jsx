@@ -20,10 +20,12 @@ class App extends React.Component {
       currentWord: {},
       currentCat: {},
       currentDef:{},
+      editing:"",
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.editWord = this.editWord.bind(this);
+    this.deleteWord = this.deleteWord.bind(this);
   }
 
   componentDidMount() {
@@ -65,22 +67,52 @@ class App extends React.Component {
       }
     })
     .then((results) => {
+      this.setState({editing: "", currentWord:{}, currentCat:{}, currentDef:{}})
+      return results
+    })
+    .then((results) => {
       this.getWords();
     })
   }
 
   editWord(e) {
-    console.log(e.target.value);
+    return $.ajax({
+      url: '/edit',
+      type: 'POST',
+      data: `${e.target.value}`,
+      success: function(res) {
+        alert(`Continue to Form Below to Edit the Type and Definition for the Word ${res}.`);
+      }
+    })
+    .then((result) => {
+      this.setState({editing: result})
+      console.log(this.state.editing)
+      return result;
+    })
+  }
+
+  deleteWord(e) {
+    return $.ajax({
+      url: '/delete',
+      type: 'POST',
+      data: `${e.target.value}`,
+      success: function(res) {
+        alert(res);
+      }
+    })
+    .then((results) => {
+      this.getWords();
+    })
   }
 
   render() {
     return (
       <>
       <div>
-        <Word_list glossWords={this.state.words} onClick={(e) => this.editWord(e)}/>
+        <Word_list glossWords={this.state.words} onClick={(e) => this.editWord(e)} onDelete={(e) => this.deleteWord(e)}/>
       </div>
       <div>
-        <Word_Form onChange={(e) => this.handleInputChange(e)} onClick={(e) => this.addWord()}/>
+        <Word_Form onChange={(e) => this.handleInputChange(e)} onClick={(e) => this.addWord()} edit={this.state.editing}/>
       </div>
       </>
     )

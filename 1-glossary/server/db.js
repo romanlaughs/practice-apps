@@ -64,7 +64,7 @@ let check = (input, params) => {
  let remove = (param) => {
   return DB_.deleteMany(param)
   .then((results) => {
-    console.log(results)
+    return(results)
     console.log('One Deleted')
   })
  }

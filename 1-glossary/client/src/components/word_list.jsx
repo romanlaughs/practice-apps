@@ -10,7 +10,7 @@ function Word_list(props) {
           <a style={{fontStyle: 'italic'}}>{item.category}</a> - <a>"{item.definition}"</a>
           <button value={item.word} style={{backgroundColor: 'blue', color: 'white', fontSize: '10px', borderRadius: '50%'}}type='submit' onClick={props.onClick}>
             Edit</button><button value={item.word} style={{backgroundColor: 'red', color: 'white', fontSize: '10px', borderRadius: '50%'}}
-            type='submit'onClick={props.onClick}>Delete</button></li>
+            type='submit'onClick={props.onDelete}>Delete</button></li>
        )}
      </ul>
    </div>
