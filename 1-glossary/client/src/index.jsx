@@ -67,7 +67,7 @@ class App extends React.Component {
       }
     })
     .then((results) => {
-      this.setState({editing: "", currentWord:{}, currentCat:{}, currentDef:{}})
+      this.setState({editing: ""})
       return results
     })
     .then((results) => {
@@ -108,6 +108,9 @@ class App extends React.Component {
   render() {
     return (
       <>
+      <div style={{fontSize: '40px', color: 'Blue', shadow:'1px', fontWeight:'bold'}}>
+        Glossary
+      </div>
       <div>
         <Word_list glossWords={this.state.words} onClick={(e) => this.editWord(e)} onDelete={(e) => this.deleteWord(e)}/>
       </div>
