@@ -19,13 +19,13 @@ app.use(logger);
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-/**** 
- * 
- * 
- * Other routes here....
- *
- * 
- */
+app.get('/formOne', (req, res) => {
+  res.send('I Love You Baby :)')
+})
+
+app.get('/formTwo', (req, res) => {
+  res.send('I Love You Baby :)')
+})
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
