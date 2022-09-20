@@ -14,7 +14,7 @@ class FormTwo extends React.Component {
   render() {
     return (
       <div>
-        <h1> Nice! You Did It!!!</h1>
+        <h1> Welcome {this.props.user}! </h1>
         <p>This is Page {this.state.two}...</p>
         {/* <code>Page Cookie: {JSON.stringify(document.cookie, undefined, "\t")}</code> */}
         <input id='userName' name='userName' type='text'></input>
