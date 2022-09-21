@@ -16,9 +16,13 @@ db.connectAsync()
   .then(() =>
     // Expand this table definition as needed:
     db.queryAsync(
-      "CREATE TABLE IF NOT EXISTS responses (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)"
+      "CREATE TABLE IF NOT EXISTS user (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, session VARCHAR(100), username VARCHAR(25), email VARCHAR(30), password VARCHAR(20), street VARCHAR(30), streettwo VARCHAR(30), city VARCHAR(30), state VARCHAR(20), zipcode INTEGER(6), payment VARCHAR(20), exp VARCHAR(5), cvv INTEGER(3), billingzip INTEGER(6))"
+     // "CREATE TABLE IF NOT EXISTS address (id INT NOT NULL AUTO_INCREMENT, street VARCHAR(30), streettwo VARCHAR(30), city VARCHAR(30), state VARCHAR(2), zipcode INTEGER(6))"
+      // CREATE TABLE IF NOT EXISTS payment (id INT NOT NULL AUTO_INCREMENT, payment INTEGER(20), exp VARCHAR(5), cvv INTEGER(3), billingzip INTEGER(6))"
     )
   )
   .catch((err) => console.log(err));
+
+
 
 module.exports = db;

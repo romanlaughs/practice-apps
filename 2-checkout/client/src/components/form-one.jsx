@@ -14,7 +14,7 @@ class FormOne extends React.Component {
   render() {
     return (
       <div>
-        <h1> Hello World</h1>
+        <h1> Hello New User </h1>
         <p>You Made it to Page {this.state.one}...</p>
         {/* <code>Page Cookie: {JSON.stringify(document.cookie, undefined, "\t")}</code> */}
         <div style={{padding: '10px'}}>
@@ -23,7 +23,7 @@ class FormOne extends React.Component {
         </div>
         <div style={{padding: '10px'}}>
           <a>E-Mail</a>
-          <input id='email' name='email' type='text' onChange={this.props.input}></input>
+          <input id='email' name='email' type='email' onChange={this.props.input}></input>
         </div>
         <div style={{padding: '10px'}}>
           <a>Password</a>

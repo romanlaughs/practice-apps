@@ -1,7 +1,9 @@
 import React from 'react';
 import FormOne from './form-one.jsx';
 import FormTwo from './form-two.jsx';
+import FormThree from './form-three.jsx';
 import CheckOut from './checkoutButton.jsx';
+import Summary from './summary.jsx';
 import $ from 'jquery';
 
 class App extends React.Component {
@@ -13,7 +15,7 @@ class App extends React.Component {
       email:'',
       password:'',
       street:'',
-      streetTwo:'',
+      streettwo:'',
       city:'',
       state:'',
       zipcode:'',
@@ -26,6 +28,8 @@ class App extends React.Component {
     this.inputHandler = this.inputHandler.bind(this);
     this.checkout = this.checkout.bind(this);
     this.formOneButton = this.formOneButton.bind(this);
+    this.formTwoButton = this.formTwoButton.bind(this);
+    this.summaryButton = this.summaryButton.bind(this);
   }
 
   inputHandler(input) {
@@ -38,6 +42,33 @@ class App extends React.Component {
     }
     if (field === 'password') {
       this.setState({password: input.target.value})
+    }
+    if (field === 'street') {
+      this.setState({street: input.target.value})
+    }
+    if (field === 'streettwo') {
+      this.setState({streettwo: input.target.value})
+    }
+    if (field === 'city') {
+      this.setState({city: input.target.value})
+    }
+    if (field === 'state') {
+      this.setState({state: input.target.value})
+    }
+    if (field === 'zipcode') {
+      this.setState({zipcode: input.target.value})
+    }
+    if (field === 'payment') {
+      this.setState({payment: input.target.value})
+    }
+    if (field === 'exp') {
+      this.setState({exp: input.target.value})
+    }
+    if (field === 'cvv') {
+      this.setState({cvv: input.target.value})
+    }
+    if (field === 'billingzip') {
+      this.setState({billingzip: input.target.value})
     }
   }
 
@@ -64,7 +95,46 @@ class App extends React.Component {
       }
     })
     .then(() => {
-      this.setState({page: <FormTwo user={this.state.username}/>})
+      this.setState({page: <FormTwo user={this.state.username} submit={() => {this.formTwoButton()}} input={(i) => {this.inputHandler(i)}}/>})
+    })
+  }
+
+  formTwoButton() {
+    $.ajax({
+      url: '/formThree',
+      type: 'POST',
+      data: {username: this.state.username, street: this.state.street, streettwo: this.state.streettwo, city: this.state.city, state: this.state.state, zipcode: this.state.zipcode},
+      success: function(res) {
+        console.log(res)
+      }
+    })
+    .then(() => {
+      this.setState({page: <FormThree user={this.state.username} input={(i) => {this.inputHandler(i)}} submit={() => {this.summaryButton()}}/>})
+    })
+  }
+
+  summaryButton() {
+    $.ajax({
+      url: '/summary',
+      type: 'POST',
+      data: {username: this.state.username, payment: this.state.payment, exp: this.state.exp, cvv: this.state.cvv, billingzip: this.state.billingzip},
+      success: function(res) {
+        console.log(res)
+      }
+    })
+    .then(() => {
+      return $.ajax({
+        url: '/summaryTwo',
+        type: 'POST',
+        data: {username: this.state.username},
+        success: function(res) {
+          return res
+        }
+      })
+    })
+    .then((results) => {
+      console.log(results)
+      this.setState({page: <Summary summary={results} user={this.state.user}/>})
     })
   }
 

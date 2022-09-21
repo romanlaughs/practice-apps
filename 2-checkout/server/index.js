@@ -27,7 +27,7 @@ app.get('/formOne', (req, res) => {
 })
 
 app.post('/formTwo', (req, res) => {
-  req.on('data', function(data) {
+    req.on('data', function(data) {
     var decoded = data.toString('utf8');
     var infoArray = decoded.split('&');
     var objInfo = {};
@@ -38,10 +38,103 @@ app.post('/formTwo', (req, res) => {
     var emailPreFix = objInfo.email;
     var emailPostFix = emailPreFix.replace('%40', '@')
     objInfo.email = emailPostFix;
-    res.send(objInfo);
+    var query = 'INSERT INTO user SET ?'
+    db.query(query, objInfo, (err, res) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('SUCCESS!')
+      }
+    })
+    res.send(objInfo)
   })
-  // res.send('Page Two')
+});
+
+app.post('/formThree', (req, res) => {
+  req.on('data', function(data) {
+    var decoded = data.toString('utf8');
+    var infoArray = decoded.split('&');
+    var objInfo = {};
+    for (var i = 0; i < infoArray.length; i++) {
+      var split = infoArray[i].split('=')
+      objInfo[split[0]] = split[1];
+    }
+
+    for (var key in objInfo) {
+      var fixed = ''
+      for (var i = 0; i < objInfo[key].length; i++) {
+        if (objInfo[key][i] === '+') {
+          fixed = fixed + ' ';
+        } else {
+          fixed = fixed + objInfo[key][i];
+        }
+      }
+      objInfo[key] = fixed.replace('%2C', ',')
+    }
+    var query = `UPDATE user SET ? WHERE username = '${objInfo.username}'`
+    db.query(query, objInfo, (err, res) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('SUCCESS!')
+      }
+    })
+    res.send(objInfo)
+  })
 })
+
+app.post('/summary', (req, res) => {
+  req.on('data', function(data) {
+    var decoded = data.toString('utf8');
+    var infoArray = decoded.split('&');
+    var objInfo = {};
+    for (var i = 0; i < infoArray.length; i++) {
+      var split = infoArray[i].split('=')
+      objInfo[split[0]] = split[1];
+    }
+    for (var key in objInfo) {
+      objInfo[key] = objInfo[key].replace('%2F', '/');
+      if (key === 'exp') {
+        var fixed = '';
+        var split = objInfo[key].split('-');
+        var month = split[1];
+        var year = split[0].slice(2)
+        fixed = fixed + month + '/' + year;
+        objInfo[key] = fixed;
+      }
+    }
+    var query = `UPDATE user SET ? WHERE username = '${objInfo.username}'`
+    db.query(query, objInfo, (err, res) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('SUCCESS!')
+      }
+    })
+    res.send(objInfo)
+  })
+})
+
+app.post('/summaryTwo', (req, res) => {
+  req.on('data', function(data) {
+    var decoded = data.toString('utf8');
+    var infoArray = decoded.split('&');
+    var objInfo = {};
+    for (var i = 0; i < infoArray.length; i++) {
+      var split = infoArray[i].split('=')
+      objInfo[split[0]] = split[1];
+    }
+  var query = `SELECT * FROM user WHERE username = '${objInfo.username}'`
+  db.query(query, (err, response) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.send(response);
+    }
+  })
+  })
+});
+
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
