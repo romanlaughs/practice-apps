@@ -23,7 +23,14 @@ app.use(myOwnMiddle)
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get('/formOne', (req, res) => {
-  res.send('Page One')
+  var query = `SELECT * FROM user WHERE session = '${req.session_id}'`
+  db.query(query, (err, response) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.send(response.length.toString())
+    }
+  })
 })
 
 app.post('/formTwo', (req, res) => {
@@ -31,6 +38,7 @@ app.post('/formTwo', (req, res) => {
     var decoded = data.toString('utf8');
     var infoArray = decoded.split('&');
     var objInfo = {};
+    objInfo['session'] = req.session_id;
     for (var i = 0; i < infoArray.length; i++) {
       var split = infoArray[i].split('=')
       objInfo[split[0]] = split[1];

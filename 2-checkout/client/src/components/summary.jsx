@@ -23,6 +23,8 @@ class Summary extends React.Component {
               <a>{item.streettwo}</a>
               <a>{item.city}, {item.state} {item.zipcode}</a>
 
+              <a>We MAY give you a CALL at {item.phone}</a>
+
               <a>Payment Info:</a>
               <a>Payment Card #: {item.payment}</a>
               <a>EXP: {item.exp}</a>
@@ -34,7 +36,7 @@ class Summary extends React.Component {
         </div>
         {/* <code>Page Cookie: {JSON.stringify(document.cookie, undefined, "\t")}</code> */}
 
-        <button type='submit'>Order Now</button>
+        <button type='submit' onClick={this.props.submit} style={{borderRadius: '25px', backgroundColor: 'brown', color: 'white', padding: '20px'}}>Order Now</button>
       </div>
     )
   }

@@ -37,7 +37,11 @@ class FormTwo extends React.Component {
           <a>Zip Code</a>
           <input id='zipcode' name='zipcode' type='text' maxLength='5' onChange={this.props.input}></input>
         </div>
-        <button type='submit' onClick={this.props.submit}>NEXT</button>
+        <div style={{padding: '10px'}}>
+          <a>Phone Number</a>
+          <input id='phone' name='phone' type='text' maxLength='11' onChange={this.props.input}></input>
+        </div>
+        <button type='submit' onClick={this.props.submit} style={{borderRadius: '25px', backgroundColor: 'brown', color: 'white', padding: '20px'}}>NEXT</button>
       </div>
     )
   }

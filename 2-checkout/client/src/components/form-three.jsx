@@ -30,7 +30,7 @@ class FormThree extends React.Component {
           <a>Billing Zip Code</a>
           <input id='billingzip' name='billingzip' type='text' maxLength='5' onChange={this.props.input}></input>
         </div>
-        <button type='submit' onClick={this.props.submit}>NEXT</button>
+        <button type='submit' onClick={this.props.submit} style={{borderRadius: '25px', backgroundColor: 'brown', color: 'white', padding: '20px'}}>NEXT</button>
       </div>
     )
   }

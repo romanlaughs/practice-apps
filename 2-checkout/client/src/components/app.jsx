@@ -19,6 +19,7 @@ class App extends React.Component {
       city:'',
       state:'',
       zipcode:'',
+      phone:'',
       payment:'',
       exp:'',
       cvv:'',
@@ -30,6 +31,7 @@ class App extends React.Component {
     this.formOneButton = this.formOneButton.bind(this);
     this.formTwoButton = this.formTwoButton.bind(this);
     this.summaryButton = this.summaryButton.bind(this);
+    this.complete = this.complete.bind(this);
   }
 
   inputHandler(input) {
@@ -58,6 +60,9 @@ class App extends React.Component {
     if (field === 'zipcode') {
       this.setState({zipcode: input.target.value})
     }
+    if (field === 'phone') {
+      this.setState({phone: input.target.value})
+    }
     if (field === 'payment') {
       this.setState({payment: input.target.value})
     }
@@ -78,10 +83,16 @@ class App extends React.Component {
       type: 'GET',
       success: function(res) {
         console.log(res)
+        return res
       }
     })
-    .then(() => {
-      this.setState({page: <FormOne submit={() => {this.formOneButton()}} input={(i) => {this.inputHandler(i)}}/>})
+    .then((res) => {
+      console.log(res)
+      if (res === '0') {
+        this.setState({page: <FormOne submit={() => {this.formOneButton()}} input={(i) => {this.inputHandler(i)}}/>})
+      } else {
+        alert('Please delete the cookie to start a new Session.')
+      }
     })
   }
 
@@ -103,7 +114,7 @@ class App extends React.Component {
     $.ajax({
       url: '/formThree',
       type: 'POST',
-      data: {username: this.state.username, street: this.state.street, streettwo: this.state.streettwo, city: this.state.city, state: this.state.state, zipcode: this.state.zipcode},
+      data: {username: this.state.username, street: this.state.street, streettwo: this.state.streettwo, city: this.state.city, state: this.state.state, zipcode: this.state.zipcode, phone: this.state.phone},
       success: function(res) {
         console.log(res)
       }
@@ -129,18 +140,23 @@ class App extends React.Component {
         data: {username: this.state.username},
         success: function(res) {
           return res
-        }
+        },
       })
     })
     .then((results) => {
       console.log(results)
-      this.setState({page: <Summary summary={results} user={this.state.user}/>})
+      this.setState({page: <Summary summary={results} user={this.state.user} submit={() => {this.complete()}}/>})
     })
+  }
+
+  complete() {
+    alert('You Order Has Been Placed :)')
+    this.setState({page: <CheckOut checkout={() => {this.checkout()}}/>})
   }
 
   render() {
     return(
-      <div>
+      <div >
         {this.state.page}
       </div>
     )
